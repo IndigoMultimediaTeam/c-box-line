@@ -8,10 +8,6 @@
         - defaultně se box posouvá do `0 0` a kolečko do `100 100`
  */
 (function componenta(){
-    const /* utility pro mat. operace & vytváření elementů HTML/SVG */
-        { min, max, abs }= Math,
-        createElement= document.createElement.bind(document),
-        createElementNS= document.createElementNS.bind(document, "http://www.w3.org/2000/svg");
     class CBoxLine extends HTMLElement {
         connectedCallback(){
             const /* atributy */
@@ -27,7 +23,7 @@
                 color: "#ffcc00",
                 bubble: [ bX, bY ],
                 circle: [ cX, cY ],
-                line: [ width, height ].map(v=> max(0.25, abs(v)))
+                line: [ width, height ]
             }));
             this.__shadow.appendChild(getTemplate({
                 width, height
@@ -38,7 +34,10 @@
             this.__shadow= this.attachShadow({ mode: "closed" });
         }
     }
- 
+    const /* utility pro mat. operace & vytváření elementů HTML/SVG */
+        { min, max, abs }= Math,
+        createElement= document.createElement.bind(document),
+        createElementNS= document.createElementNS.bind(document, "http://www.w3.org/2000/svg"); 
     
     /**
      * 
@@ -49,7 +48,8 @@
      * @param {[number, number]} def.line `[ deltaX, deltaY ]` vektorová reprezentace čáry
      * @returns {HTMLStyleElement}
      */
-    function getStyle({ color, bubble, circle, line }){
+    function getStyle({ color, bubble, circle, line: pre_line }){
+        const line= pre_line.map(v=> max(0.25, abs(v))); //hypoteticky záporné velikosti, nebo nulové (vertikální/horizontální linka)
         return Object.assign(createElement("style"), { innerHTML: (`
             :host{
                 position: absolute;

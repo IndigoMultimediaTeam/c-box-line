@@ -8,7 +8,6 @@
         - defaultně se box posouvá do `0 0` a kolečko do `100 100`
  */
 (function componenta(){
-    gulp_place("./utils/small_utils.sub.js", "file_once");/* global max, abs */
     class CBoxLine extends HTMLElement {
         connectedCallback(){
             const /* atributy */
@@ -24,7 +23,7 @@
                 color: "#ffcc00",
                 bubble: [ bX, bY ],
                 circle: [ cX, cY ],
-                line: [ width, height ].map(v=> max(0.25, abs(v)))
+                line: [ width, height ]
             }));
             this.__shadow.appendChild(getTemplate({
                 width, height

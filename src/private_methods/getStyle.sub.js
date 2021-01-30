@@ -1,5 +1,5 @@
 /* parent *//* global CBoxLine */
-gulp_place("../utils/small_utils.sub.js", "file_once"); /* global createElement, min */
+gulp_place("../utils/small_utils.sub.js", "file_once"); /* global createElement, min, max, abs */
 
 /**
  * 
@@ -10,7 +10,8 @@ gulp_place("../utils/small_utils.sub.js", "file_once"); /* global createElement,
  * @param {[number, number]} def.line `[ deltaX, deltaY ]` vektorová reprezentace čáry
  * @returns {HTMLStyleElement}
  */
-function getStyle({ color, bubble, circle, line }){
+function getStyle({ color, bubble, circle, line: pre_line }){
+    const line= pre_line.map(v=> max(0.25, abs(v))); //hypoteticky záporné velikosti, nebo nulové (vertikální/horizontální linka)
     return Object.assign(createElement("style"), { innerHTML: (`
         :host{
             position: absolute;
