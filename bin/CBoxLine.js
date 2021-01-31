@@ -5,37 +5,41 @@
         - Komponenta se roztáhne na 100% a umístí se vlevo nahoře
         - box a kolečko (a čára) se pozicují procentuálně uvnitř komponenty pomocí atributů `position-*`
         - částečně ošetřeno pokud, je box a kolečko v horizonální/vertikální rovinně
-        - defaultně se box posouvá do `0 0` a kolečko do `100 100`
-        - všechny možnosti konfigurace viz `getComponentConfig` (a typ `config` a `observed_attributes`)
-    verze: 1.0.1
+        - defaultně se box posouvá do `0 0` a kolečko do `100 100` (viz `attributes`)
+        - všechny možnosti konfigurace viz `getComponentConfig` (a typ `config` a `attributes`)
+    verze: "1.0.2"
+    zdroj: "https://github.com/IndigoMultimediaTeam/c-box-line#readme"
  */
 (function componenta(){
-    const observed_attributes= [ "position-bubble", "position-circle" ];
     const /* utility pro mat. operace & vytváření elementů HTML/SVG */
         { min, max, abs }= Math,
         createElement= document.createElement.bind(document),
         createElementNS= document.createElementNS.bind(document, "http://www.w3.org/2000/svg");
     class CBoxLine extends HTMLElement {
+        static get tagName(){ return "c-box-line"; }
+        static get attributes(){ return [
+            { name: "position-bubble", initial: "0 0" },
+            { name: "position-circle", initial: "100 100" }
+        ]; }
         connectedCallback(){
             const config= getComponentConfig(this);
-            this.__shadow.appendChild(Object.assign(createElement("style"), {
+            this._shadow.appendChild(Object.assign(createElement("style"), {
                 innerHTML: getStyleContent(config)
             }));
-            this.__shadow.appendChild(getTemplate(config));
-            this.__ready= true;
+            this._shadow.appendChild(getTemplate(config));
+            this._ready= true;
         }
         /* toto je spíše pro debugování – např. styly se přegenerovávají celé */
-        static get observedAttributes() { return observed_attributes; }
-        attributeChangedCallback(name, oldValue, newValue) {
-            if(!this.__ready) return false;
+        static get observedAttributes() { return this.attributes.map(({ name })=> name); }
+        attributeChangedCallback(_, value_old, value_new){
+            if(!this._ready||value_new===value_old) return false;
             const config= getComponentConfig(this);
-            this.__shadow.querySelector("style")
+            this._shadow.querySelector("style")
                 .innerHTML= getStyleContent(config);
-            assignLineConfig(this.__shadow.querySelector("line"), config);
-            
+            assignLineConfig(this._shadow.querySelector("line"), config);
         }
         /* jen konstruktor s uzamčeným Shadow Root */
-        constructor(){ super(); this.__shadow= this.attachShadow({ mode: "closed" }); }
+        constructor(){ super(); this._shadow= this.attachShadow({ mode: "closed" }); }
     }
     /**
      * Dle i-té souřadnice vektoru čáry rozhodne jak bude napozicována.
@@ -70,19 +74,20 @@
      * Reprezentuje stav komponenty (barva, pozice jednotlivých elemetnů)
      * @typedef {object} config
      * @property {string} color hex barva čar a výplně (pro čáru i kruh)
+     * @property {number} stroke šířka čar
      * @property {[number, number]} bubble `[ X, Y ]` pozice bubliny
      * @property {[number, number]} circle `[ X, Y ]` pozice kolečka
      * @property {[number, number]} line `[ deltaX, deltaY ]` vektorová reprezentace čáry
      */
     /**
      * Vrací parametry komponenty
-     * @param {HTMLElement} el
+     * @param {CBoxLine} el
      * @returns {config}
      */
     function getComponentConfig(el){
         const /* atributy */
-            bubble= el.getAttribute(observed_attributes[0]) || "0 0",
-            circle= el.getAttribute(observed_attributes[1]) || "100 100";
+            [ bubble, circle ]= el.constructor.attributes
+                .map(({ name, initial })=> el.getAttribute(name)||initial);
         const /* pozice */
             [ bX, bY ]= bubble.trim().split(" ").map(n=> Number(n)),
             [ cX, cY ]= circle.trim().split(" ").map(n=> Number(n));
@@ -91,6 +96,7 @@
             deltaY= cY-bY;
         return {
             color: "#ffcc00",
+            stroke: 1.5,
             bubble: [ bX, bY ],
             circle: [ cX, cY ],
             line: [ deltaX, deltaY ]
@@ -102,7 +108,7 @@
      * @param {config} config
      * @returns {HTMLStyleElement}
      */
-    function getStyleContent({ color, bubble, circle, line: pre_line }){
+    function getStyleContent({ color, stroke, bubble, circle, line: pre_line }){
         const line= pre_line.map(v=> max(0.25, abs(v))); //hypoteticky záporné velikosti, nebo nulové (vertikální/horizontální linka)
         return (`
             :host{
@@ -127,7 +133,7 @@
                 height: ${line[1]}%;
                 stroke: ${color};
                 fill: ${color};
-                stroke-width: 1.5;
+                stroke-width: ${stroke};
                 z-index: 0;
             }
             .circle{
@@ -162,5 +168,5 @@
             Object.assign(createElement("div"), { className: "circle" }));
         return fragment;
     }
-    customElements.define("c-box-line", CBoxLine);
+    customElements.define(CBoxLine.tagName, CBoxLine);
 })();

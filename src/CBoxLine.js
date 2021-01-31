@@ -5,35 +5,39 @@
         - Komponenta se roztáhne na 100% a umístí se vlevo nahoře
         - box a kolečko (a čára) se pozicují procentuálně uvnitř komponenty pomocí atributů `position-*`
         - částečně ošetřeno pokud, je box a kolečko v horizonální/vertikální rovinně
-        - defaultně se box posouvá do `0 0` a kolečko do `100 100`
-        - všechny možnosti konfigurace viz `getComponentConfig` (a typ `config` a `observed_attributes`)
-    verze: gulp_place("app.version", "eval_out")
+        - defaultně se box posouvá do `0 0` a kolečko do `100 100` (viz `attributes`)
+        - všechny možnosti konfigurace viz `getComponentConfig` (a typ `config` a `attributes`)
+    verze: gulp_place("app.version", "variable")
+    zdroj: gulp_place("app.homepage", "variable")
  */
 (function componenta(){
-    const observed_attributes= [ "position-bubble", "position-circle" ];
     gulp_place("./utils/small_utils.sub.js", "file_once");/* global createElement */
     class CBoxLine extends HTMLElement {
+        static get tagName(){ return "c-box-line"; }
+        static get attributes(){ return [
+            { name: "position-bubble", initial: "0 0" },
+            { name: "position-circle", initial: "100 100" }
+        ]; }
         connectedCallback(){
             const config= getComponentConfig(this);
-            this.__shadow.appendChild(Object.assign(createElement("style"), {
+            this._shadow.appendChild(Object.assign(createElement("style"), {
                 innerHTML: getStyleContent(config)
             }));
-            this.__shadow.appendChild(getTemplate(config));
-            this.__ready= true;
+            this._shadow.appendChild(getTemplate(config));
+            this._ready= true;
         }
         /* toto je spíše pro debugování – např. styly se přegenerovávají celé */
-        static get observedAttributes() { return observed_attributes; }
-        attributeChangedCallback(name, oldValue, newValue) {
-            if(!this.__ready) return false;
+        static get observedAttributes() { return this.attributes.map(({ name })=> name); }
+        attributeChangedCallback(_, value_old, value_new){
+            if(!this._ready||value_new===value_old) return false;
             const config= getComponentConfig(this);
-            this.__shadow.querySelector("style")
+            this._shadow.querySelector("style")
                 .innerHTML= getStyleContent(config);
-            assignLineConfig(this.__shadow.querySelector("line"), config);
-            
+            assignLineConfig(this._shadow.querySelector("line"), config);
         }
         /* jen konstruktor s uzamčeným Shadow Root */
-        constructor(){ super(); this.__shadow= this.attachShadow({ mode: "closed" }); }
+        constructor(){ super(); this._shadow= this.attachShadow({ mode: "closed" }); }
     }
     gulp_place('./private_methods/*.js', "glob_once");/* global getComponentConfig, getStyleContent, getTemplate, assignLineConfig */
-    customElements.define("c-box-line", CBoxLine);
+    customElements.define(CBoxLine.tagName, CBoxLine);
 })();
