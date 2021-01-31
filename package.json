@@ -31,7 +31,8 @@
         "check": "node ./jaaJBT.js check && npm outdated",
         "update": "node ./jaaJBT.js update && npm install",
         "jshint": "node ./node_modules/jshint/bin/jshint --verbose",
-        "jshint_full": "node ./node_modules/jshint/bin/jshint --verbose --show-non-errors"
+        "jshint_full": "node ./node_modules/jshint/bin/jshint --verbose --show-non-errors",
+        "gulp": "node ./node_modules/gulp/bin/gulp.js"
     },
     "directories": {
         "gulp": "gulp/",

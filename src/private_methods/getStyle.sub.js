@@ -1,18 +1,13 @@
 /* parent *//* global CBoxLine */
 gulp_place("../utils/small_utils.sub.js", "file_once"); /* global createElement, min, max, abs */
-
 /**
  * 
- * @param {object} def 
- * @param {string} def.color hex barva čar a výplně (pro čáru i kruh)
- * @param {[number, number]} def.bubble `[ X, Y ]` pozice bubliny
- * @param {[number, number]} def.circle `[ X, Y ]` pozice kolečka
- * @param {[number, number]} def.line `[ deltaX, deltaY ]` vektorová reprezentace čáry
+ * @param {config} config
  * @returns {HTMLStyleElement}
  */
-function getStyle({ color, bubble, circle, line: pre_line }){
+function getStyleContent({ color, bubble, circle, line: pre_line }){
     const line= pre_line.map(v=> max(0.25, abs(v))); //hypoteticky záporné velikosti, nebo nulové (vertikální/horizontální linka)
-    return Object.assign(createElement("style"), { innerHTML: (`
+    return (`
         :host{
             position: absolute;
             top: 0;
@@ -48,5 +43,5 @@ function getStyle({ color, bubble, circle, line: pre_line }){
             width: 1rem;
             transform: translate(-50%, -50%);
         }
-        `).split("\n").map(l=> l.trim()).filter(Boolean).join("")});
+        `).split("\n").map(l=> l.trim()).filter(Boolean).join("");
 }
