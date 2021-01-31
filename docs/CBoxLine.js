@@ -7,6 +7,7 @@
         - částečně ošetřeno pokud, je box a kolečko v horizonální/vertikální rovinně
         - defaultně se box posouvá do `0 0` a kolečko do `100 100`
         - všechny možnosti konfigurace viz `getComponentConfig` (a typ `config` a `observed_attributes`)
+    verze: 1.0.1
  */
 (function componenta(){
     const observed_attributes= [ "position-bubble", "position-circle" ];
@@ -28,9 +29,8 @@
         attributeChangedCallback(name, oldValue, newValue) {
             if(!this.__ready) return false;
             const config= getComponentConfig(this);
-            Object.assign(this.__shadow.querySelector("style"), {
-                innerHTML: getStyleContent(config)
-            });
+            this.__shadow.querySelector("style")
+                .innerHTML= getStyleContent(config);
             assignLineConfig(this.__shadow.querySelector("line"), config);
             
         }
@@ -59,10 +59,10 @@
      * @returns {HTMLElement|SVGElement} `el`
      */
     function assignLineConfig(el, { line: [ deltaX, deltaY ] }){
-        const [ x1, x2 ]= getLine12(deltaX);
-        const [ y1, y2 ]= getLine12(deltaY);
-        for(const [ key, value ] of Object.entries({ x1, x2, y1, y2 })){
-            el.setAttribute(key, value);
+        const attributes= [ "x1", "x2", "y1", "y2" ];
+        const from_x1_to_y2= getLine12(deltaX).concat(getLine12(deltaY));
+        for(let i=0, key;( key= attributes[i] ); i++){
+            el.setAttribute(key, from_x1_to_y2[i]);
         }
         return el;
     }

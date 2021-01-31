@@ -7,6 +7,7 @@
         - částečně ošetřeno pokud, je box a kolečko v horizonální/vertikální rovinně
         - defaultně se box posouvá do `0 0` a kolečko do `100 100`
         - všechny možnosti konfigurace viz `getComponentConfig` (a typ `config` a `observed_attributes`)
+    verze: gulp_place("app.version", "eval_out")
  */
 (function componenta(){
     const observed_attributes= [ "position-bubble", "position-circle" ];
@@ -25,9 +26,8 @@
         attributeChangedCallback(name, oldValue, newValue) {
             if(!this.__ready) return false;
             const config= getComponentConfig(this);
-            Object.assign(this.__shadow.querySelector("style"), {
-                innerHTML: getStyleContent(config)
-            });
+            this.__shadow.querySelector("style")
+                .innerHTML= getStyleContent(config);
             assignLineConfig(this.__shadow.querySelector("line"), config);
             
         }

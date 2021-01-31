@@ -7,10 +7,10 @@ gulp_place("../utils/getLine12.sub.js", "file_once"); /* global getLine12 */
  * @returns {HTMLElement|SVGElement} `el`
  */
 function assignLineConfig(el, { line: [ deltaX, deltaY ] }){
-    const [ x1, x2 ]= getLine12(deltaX);
-    const [ y1, y2 ]= getLine12(deltaY);
-    for(const [ key, value ] of Object.entries({ x1, x2, y1, y2 })){
-        el.setAttribute(key, value);
+    const attributes= [ "x1", "x2", "y1", "y2" ];
+    const from_x1_to_y2= getLine12(deltaX).concat(getLine12(deltaY));
+    for(let i=0, key;( key= attributes[i] ); i++){
+        el.setAttribute(key, from_x1_to_y2[i]);
     }
     return el;
 }
