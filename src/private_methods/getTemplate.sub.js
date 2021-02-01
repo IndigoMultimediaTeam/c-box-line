@@ -4,7 +4,7 @@ gulp_place("../utils/small_utils.sub.js", "file_once"); /* global createElement,
 /**
  * Generuje `<><slot/><svg><line/></svg><div.circle/></>`
  * @param {config} config
- * @returns {HTMLFrameElement}
+ * @returns {DocumentFragment}
  */
 function getTemplate(config){
     const fragment= document.createDocumentFragment();

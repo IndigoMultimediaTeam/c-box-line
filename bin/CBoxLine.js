@@ -159,7 +159,7 @@
     /**
      * Generuje `<><slot/><svg><line/></svg><div.circle/></>`
      * @param {config} config
-     * @returns {HTMLFrameElement}
+     * @returns {DocumentFragment}
      */
     function getTemplate(config){
         const fragment= document.createDocumentFragment();
