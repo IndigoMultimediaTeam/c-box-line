@@ -12,9 +12,10 @@
  */
 (function componenta(){
     gulp_place("./utils/small_utils.sub.js", "file_once");/* global createElement */
+    gulp_place("./utils/CBoxLine_static_type.sub.js", "file_once");/* global CBoxLine_static */
     class CBoxLine extends HTMLElement {
-        static get tagName(){ return "c-box-line"; }
-        static get attributes(){ return [
+        static get tagName(){ /* viz CBoxLine_static */ return "c-box-line"; }
+        static get attributes(){ /* viz CBoxLine_static */ return [
             { name: "position-bubble", initial: "0 0" },
             { name: "position-circle", initial: "100 100" }
         ]; }

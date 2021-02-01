@@ -7,7 +7,7 @@
         - částečně ošetřeno pokud, je box a kolečko v horizonální/vertikální rovinně
         - defaultně se box posouvá do `0 0` a kolečko do `100 100` (viz `attributes`)
         - všechny možnosti konfigurace viz `getComponentConfig` (a typ `config` a `attributes`)
-    verze: "1.0.2"
+    verze: "1.0.3"
     zdroj: "https://github.com/IndigoMultimediaTeam/c-box-line#readme"
  */
 (function componenta(){
@@ -15,9 +15,14 @@
         { min, max, abs }= Math,
         createElement= document.createElement.bind(document),
         createElementNS= document.createElementNS.bind(document, "http://www.w3.org/2000/svg");
+    /**
+     * Statické hodnoty `CBoxLine` … jen pomocné pro napovídání
+     * @typedef CBoxLine_static
+     * @type {HTMLElement & { constructor: { attributes: { name: string, initial: string }[], tagName: string } }}
+     */
     class CBoxLine extends HTMLElement {
-        static get tagName(){ return "c-box-line"; }
-        static get attributes(){ return [
+        static get tagName(){ /* viz CBoxLine_static */ return "c-box-line"; }
+        static get attributes(){ /* viz CBoxLine_static */ return [
             { name: "position-bubble", initial: "0 0" },
             { name: "position-circle", initial: "100 100" }
         ]; }
@@ -58,9 +63,9 @@
     /**
      * Analogie `Object.assign` jen pro `<line>` (v cyklu se aplikuje `*.setAttribute`) a 
      * jako vstup neslouží přímo nativní parametry ale `config` (odtud si spočte `x1`, …)
-     * @param {HTMLElement|SVGElement} el
+     * @param {SVGLineElement} el
      * @param {config} config
-     * @returns {HTMLElement|SVGElement} `el`
+     * @returns {SVGLineElement} `el`
      */
     function assignLineConfig(el, { line: [ deltaX, deltaY ] }){
         const attributes= [ "x1", "x2", "y1", "y2" ];
@@ -70,18 +75,19 @@
         }
         return el;
     }
+
     /**
-     * Reprezentuje stav komponenty (barva, pozice jednotlivých elemetnů)
+     * Reprezentuje stav komponenty (barva, pozice jednotlivých elemetnů). Zdrojem je funkce {@link getComponentConfig}.
      * @typedef {object} config
-     * @property {string} color hex barva čar a výplně (pro čáru i kruh)
-     * @property {number} stroke šířka čar
+     * @property {string} [color="#ffcc00"] hex barva čar a výplně (pro čáru i kruh)
+     * @property {number} [stroke=2] šířka čar
      * @property {[number, number]} bubble `[ X, Y ]` pozice bubliny
      * @property {[number, number]} circle `[ X, Y ]` pozice kolečka
      * @property {[number, number]} line `[ deltaX, deltaY ]` vektorová reprezentace čáry
      */
     /**
      * Vrací parametry komponenty
-     * @param {CBoxLine} el
+     * @param {CBoxLine_static} el
      * @returns {config}
      */
     function getComponentConfig(el){
@@ -96,7 +102,7 @@
             deltaY= cY-bY;
         return {
             color: "#ffcc00",
-            stroke: 1.5,
+            stroke: 2,
             bubble: [ bX, bY ],
             circle: [ cX, cY ],
             line: [ deltaX, deltaY ]
