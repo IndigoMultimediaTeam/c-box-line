@@ -3,7 +3,7 @@ gulp_place("../utils/small_utils.sub.js", "file_once"); /* global createElement,
 /**
  * 
  * @param {config} config
- * @returns {HTMLStyleElement}
+ * @returns {string} Očekává se jako argument pro {@link HTMLStyleElement.innerHTML}
  */
 function getStyleContent({ color, stroke, bubble, circle, line: pre_line }){
     const line= pre_line.map(v=> max(0.25, abs(v))); //hypoteticky záporné velikosti, nebo nulové (vertikální/horizontální linka)
