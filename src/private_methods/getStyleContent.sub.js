@@ -7,6 +7,7 @@ gulp_place("../utils/small_utils.sub.js", "file_once"); /* global createElement,
  */
 function getStyleContent({ color, stroke, bubble, circle, line: pre_line }){
     const line= pre_line.map(v=> max(0.25, abs(v))); //hypoteticky záporné velikosti, nebo nulové (vertikální/horizontální linka)
+    const [ color_line, color_circle ]= [ "line", "circle" ].map(type=> `var(--cboxline-color-${type}, ${color})`);
     return (`
         :host{
             position: absolute;
@@ -28,8 +29,8 @@ function getStyleContent({ color, stroke, bubble, circle, line: pre_line }){
             left: ${min(bubble[0], circle[0])}%;
             width: ${line[0]}%;
             height: ${line[1]}%;
-            stroke: ${color};
-            fill: ${color};
+            stroke: ${color_line};
+            fill: ${color_line};
             stroke-width: ${stroke};
             z-index: 0;
         }
@@ -37,7 +38,7 @@ function getStyleContent({ color, stroke, bubble, circle, line: pre_line }){
             position: absolute;
             left: ${circle[0]}%;
             top: ${circle[1]}%;
-            background: ${color};
+            background: ${color_circle};
             border-radius: 100%;
             height: 1rem;
             width: 1rem;
