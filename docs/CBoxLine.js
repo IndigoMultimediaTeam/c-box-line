@@ -7,7 +7,7 @@
         - částečně ošetřeno pokud, je box a kolečko v horizonální/vertikální rovinně
         - defaultně se box posouvá do `0 0` a kolečko do `100 100` (viz `attributes`)
         - všechny možnosti konfigurace viz `getComponentConfig` (a typ `config` a `attributes`)
-    verze: "1.0.3"
+    verze: "1.1.0"
     zdroj: "https://github.com/IndigoMultimediaTeam/c-box-line#readme"
  */
 (function componenta(){
@@ -112,10 +112,11 @@
     /**
      * 
      * @param {config} config
-     * @returns {HTMLStyleElement}
+     * @returns {string} Očekává se jako argument pro {@link HTMLStyleElement.innerHTML}
      */
     function getStyleContent({ color, stroke, bubble, circle, line: pre_line }){
         const line= pre_line.map(v=> max(0.25, abs(v))); //hypoteticky záporné velikosti, nebo nulové (vertikální/horizontální linka)
+        const [ color_line, color_circle ]= [ "line", "circle" ].map(type=> `var(--cboxline-color-${type}, ${color})`);
         return (`
             :host{
                 position: absolute;
@@ -137,8 +138,8 @@
                 left: ${min(bubble[0], circle[0])}%;
                 width: ${line[0]}%;
                 height: ${line[1]}%;
-                stroke: ${color};
-                fill: ${color};
+                stroke: ${color_line};
+                fill: ${color_line};
                 stroke-width: ${stroke};
                 z-index: 0;
             }
@@ -146,7 +147,7 @@
                 position: absolute;
                 left: ${circle[0]}%;
                 top: ${circle[1]}%;
-                background: ${color};
+                background: ${color_circle};
                 border-radius: 100%;
                 height: 1rem;
                 width: 1rem;
@@ -159,7 +160,7 @@
     /**
      * Generuje `<><slot/><svg><line/></svg><div.circle/></>`
      * @param {config} config
-     * @returns {HTMLFrameElement}
+     * @returns {DocumentFragment}
      */
     function getTemplate(config){
         const fragment= document.createDocumentFragment();
