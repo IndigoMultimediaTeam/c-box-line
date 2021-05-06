@@ -15,7 +15,7 @@ gulp_place("../utils/CBoxLine_static_type.sub.js", "file_once");/* global CBoxLi
  */
 function getComponentConfig(el){
     const /* atributy */
-        [ bubble, circle ]= el.constructor.attributes
+        [ bubble, circle, strokeWidth ]= el.constructor.attributes
             .map(({ name, initial })=> el.getAttribute(name)||initial);
     const /* pozice */
         [ bX, bY ]= bubble.trim().split(" ").map(n=> Number(n)),
@@ -25,7 +25,7 @@ function getComponentConfig(el){
         deltaY= cY-bY;
     return {
         color: "#ffcc00",
-        stroke: 2,
+        stroke: parseInt(strokeWidth),
         bubble: [ bX, bY ],
         circle: [ cX, cY ],
         line: [ deltaX, deltaY ]

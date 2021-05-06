@@ -17,7 +17,8 @@
         static get tagName(){ /* viz CBoxLine_static */ return "c-box-line"; }
         static get attributes(){ /* viz CBoxLine_static */ return [
             { name: "position-bubble", initial: "0 0" },
-            { name: "position-circle", initial: "100 100" }
+            { name: "position-circle", initial: "100 100" },
+            { name: "stroke-width", initial: "2" }
         ]; }
         connectedCallback(){
             const config= getComponentConfig(this);
