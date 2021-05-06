@@ -7,7 +7,7 @@
         - částečně ošetřeno pokud, je box a kolečko v horizonální/vertikální rovinně
         - defaultně se box posouvá do `0 0` a kolečko do `100 100` (viz `attributes`)
         - všechny možnosti konfigurace viz `getComponentConfig` (a typ `config` a `attributes`)
-    verze: "1.1.0"
+    verze: "1.1.1"
     zdroj: "https://github.com/IndigoMultimediaTeam/c-box-line#readme"
  */
 (function componenta(){
@@ -24,7 +24,8 @@
         static get tagName(){ /* viz CBoxLine_static */ return "c-box-line"; }
         static get attributes(){ /* viz CBoxLine_static */ return [
             { name: "position-bubble", initial: "0 0" },
-            { name: "position-circle", initial: "100 100" }
+            { name: "position-circle", initial: "100 100" },
+            { name: "stroke-width", initial: "2" }
         ]; }
         connectedCallback(){
             const config= getComponentConfig(this);
@@ -92,7 +93,7 @@
      */
     function getComponentConfig(el){
         const /* atributy */
-            [ bubble, circle ]= el.constructor.attributes
+            [ bubble, circle, strokeWidth ]= el.constructor.attributes
                 .map(({ name, initial })=> el.getAttribute(name)||initial);
         const /* pozice */
             [ bX, bY ]= bubble.trim().split(" ").map(n=> Number(n)),
@@ -102,7 +103,7 @@
             deltaY= cY-bY;
         return {
             color: "#ffcc00",
-            stroke: 2,
+            stroke: parseInt(strokeWidth),
             bubble: [ bX, bY ],
             circle: [ cX, cY ],
             line: [ deltaX, deltaY ]
@@ -115,7 +116,7 @@
      * @returns {string} Očekává se jako argument pro {@link HTMLStyleElement.innerHTML}
      */
     function getStyleContent({ color, stroke, bubble, circle, line: pre_line }){
-        const line= pre_line.map(v=> max(0.25, abs(v))); //hypoteticky záporné velikosti, nebo nulové (vertikální/horizontální linka)
+        const line= pre_line.map(v=> max(0.25, abs(v))).map(v=> v===0.25 ? stroke+"px" : v+"%"); //hypoteticky záporné velikosti, nebo nulové (vertikální/horizontální linka)
         const [ color_line, color_circle ]= [ "line", "circle" ].map(type=> `var(--cboxline-color-${type}, ${color})`);
         return (`
             :host{
@@ -136,8 +137,8 @@
                 position: absolute;
                 top: ${min(bubble[1], circle[1])}%;
                 left: ${min(bubble[0], circle[0])}%;
-                width: ${line[0]}%;
-                height: ${line[1]}%;
+                width: ${line[0]};
+                height: ${line[1]};
                 stroke: ${color_line};
                 fill: ${color_line};
                 stroke-width: ${stroke};

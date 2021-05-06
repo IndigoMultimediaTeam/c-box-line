@@ -1,7 +1,7 @@
 {
     "name": "c-box-line",
     "fullName": "CBoxLine",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "description": "Web componetnt box-arrow",
     "main": "gulpfile.js",
     "sequence": [
