@@ -1,3 +1,4 @@
+[![LTS+sub-branches](https://img.shields.io/badge/submodule-LTS+sub--branches-informational?style=flat-square&logo=git)](https://github.com/IndigoMultimediaTeam/lts-driven-git-submodules)
 # CBoxLine
 Web component `<c-box-line>` represents a text “box” and “arrow” connected a line, see
 [example](https://refined-github-html-preview.kidonng.workers.dev/IndigoMultimediaTeam/c-box-line/raw/main/docs/examples.html).
