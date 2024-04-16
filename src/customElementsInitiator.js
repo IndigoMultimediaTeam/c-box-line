@@ -9,4 +9,4 @@
     component.call(this);
 })(function component(){
 // COMPONENT
-}, now);
+}, "now");
