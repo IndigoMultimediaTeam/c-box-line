@@ -1,11 +1,12 @@
 [![LTS+sub-branches](https://img.shields.io/badge/submodule-LTS+sub--branches-informational?style=flat-square&logo=git)](https://github.com/IndigoMultimediaTeam/lts-driven-git-submodules)
 # CBoxLine
 Web component `<c-box-line>` represents a text “box” and “arrow” connected a line, see
-[example](https://refined-github-html-preview.kidonng.workers.dev/IndigoMultimediaTeam/c-box-line/raw/main/docs/examples.html).
+[example](https://indigomultimediateam.github.io/c-box-line/examples.html).
 
 ## Options
 - **ESM Component can be found in [./CBoxLine.js](./CBoxLine.js)**
 - UMD alternative see [./lib/CBoxLine.umd.js](./lib/CBoxLine.umd.js)
+- [CEI](https://github.com/IndigoMultimediaTeam/customElementsInitiator?tab=readme-ov-file#v0) alternative see [./lib/CBoxLine.cei.js](./lib/CBoxLine.cei.js)
 
 ## Usage
 Web Component `<c-box-line position-bubble position-circle><*></*></c-box-line>`:
