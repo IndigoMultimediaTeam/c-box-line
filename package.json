@@ -1,6 +1,6 @@
 {
 	"name": "c-box-line",
-	"version": "1.2.0",
+	"version": "1.2.1",
 	"description": "Web componetnt box-arrow",
 	"author": "Jan Andrle <andrle.jan@centrum.cz>",
 	"main": "CBoxLine.js",
@@ -24,8 +24,8 @@
 	"devDependencies": {
 		"esbuild": "^0.20.2",
 		"esbuild-plugin-umd-wrapper": "^2.0.0",
-		"jsdoc-to-markdown": "~6.0",
-		"jshint": "~2.12",
+		"jsdoc-to-markdown": "^8.0.3",
+		"jshint": "^2.13.6",
 		"nodejsscript": "~1.0"
 	},
 	"jshintConfig": {

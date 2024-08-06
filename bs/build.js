@@ -33,13 +33,13 @@ $.api("", true)
 		outfile: file_umd,
 		plugins: [ umdPlugin ],
 	});
-	customElementsInitiator(file_umd, outdir);
+	customElementsInitiator(pkg.main, outdir);
 	echo("%c"+outdir.toLowerCase(), css.success);
 	$.exit();
 })
 .parse();
 
-function customElementsInitiator(file_umd, outdir){
+function customElementsInitiator(file, outdir){
 	let usage= s.cat("README.md").trim();
 	const idx_usage= usage.indexOf("## Usage")+8;
 	usage= usage.slice(idx_usage, usage.indexOf("##", idx_usage))
@@ -47,7 +47,7 @@ function customElementsInitiator(file_umd, outdir){
 		.replaceAll("\n", "\n * ");
 	usage+= "\n *\n * version: "+pkg.version;
 	usage+= "\n * source: "+pkg.homepage;
-	const component= s.cat(file_umd).trim();
+	const component= s.cat(file).trim().replaceAll("export ", "");
 	const template= s.cat("src/customElementsInitiator.js")
 		.trim()
 		.replace("\n// USAGE", usage)
